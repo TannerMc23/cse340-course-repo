@@ -31,6 +31,15 @@ import {
     processEditCategoryForm
 } from './controllers/categories.js';
 import { testErrorPage } from './controllers/errors.js';
+import {
+    showUserRegistrationForm,
+    processUserRegistrationForm,
+    showLoginForm,
+    processLoginForm,
+    processLogout,
+    requireLogin,
+    showDashboard
+} from './controllers/users.js';
 
 const router = express.Router();
 
@@ -42,21 +51,17 @@ router.get('/project/:id', showProjectDetailsPage);
 router.get('/categories', showCategoriesPage);
 router.get('/category/:id', showCategoryDetailsPage);
 router.get('/test-error', testErrorPage);
+
 // Route for new organization page
 router.get('/new-organization', showNewOrganizationForm);
-
-// Route to handle new organization form submission
 router.post('/new-organization', organizationValidation, processNewOrganizationForm);
+
 // Route to display the edit organization form
 router.get('/edit-organization/:id', showEditOrganizationForm);
-
-// Route to handle the edit organization form submission
 router.post('/edit-organization/:id', organizationValidation, processEditOrganizationForm);
 
 // Route for new project page
 router.get('/new-project', showNewProjectForm);
-
-// Route to handle new project form submission
 router.post('/new-project', projectValidation, processNewProjectForm);
 
 // Routes to handle the assign categories to project form
@@ -74,5 +79,17 @@ router.post('/new-category', categoryValidation, processNewCategoryForm);
 // Routes for editing a category
 router.get('/edit-category/:id', showEditCategoryForm);
 router.post('/edit-category/:id', categoryValidation, processEditCategoryForm);
+
+// User registration routes
+router.get('/register', showUserRegistrationForm);
+router.post('/register', processUserRegistrationForm);
+
+// User login routes
+router.get('/login', showLoginForm);
+router.post('/login', processLoginForm);
+router.get('/logout', processLogout);
+
+// Protected dashboard route
+router.get('/dashboard', requireLogin, showDashboard);
 
 export default router;
