@@ -43,6 +43,8 @@ import {
     showUsersPage
 } from './controllers/users.js';
 
+import { processAddVolunteer, processRemoveVolunteer } from './controllers/volunteers.js';
+
 const router = express.Router();
 
 router.get('/', showHomePage);
@@ -96,5 +98,9 @@ router.get('/dashboard', requireLogin, showDashboard);
 
 // Admin-only users list page
 router.get('/users', requireRole('admin'), showUsersPage);
+
+// Volunteer routes (login required)
+router.post('/volunteer/:projectId', requireLogin, processAddVolunteer);
+router.post('/unvolunteer/:projectId', requireLogin, processRemoveVolunteer);
 
 export default router;
